@@ -40,7 +40,9 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player("zaphod", "outside")
+player = Player("zaphod", room["outside"])
+#user_name = input("What's your name? ")
+##player = Player(user_name, room["outside"])
 
 # Write a loop that:
 #
@@ -52,10 +54,26 @@ player = Player("zaphod", "outside")
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+choices = ['q', 'n', 's', 'w', 'e']
+
 move = None
 while move != 'q':
-    print(f"{player.who} is in the {player.current_room} which is {room.description}")
-    move = input("\nWhere do you want to go, {player.who}?").lower()
+    #    print(f"\n{player.who} is in the {player.where_am_i()}\n")
+    print(f"\nYou are in the {player.where_am_i()}\n")
+    move = input(f"\nWhere do you want to go, {player.who_am_i()}? ").lower()
     if move == 'q':
         print("Bye you quitter!")
         exit()
+    elif move not in choices:
+        print(f'\nValid options are q, n, s, w, e')
+    elif move == 'n' and player.current_room.n_to is not None:
+        player.current_room = player.current_room.n_to
+    elif move == 's' and player.current_room.s_to is not None:
+        player.current_room = player.current_room.s_to
+    elif move == 'e' and player.current_room.e_to is not None:
+        player.current_room = player.current_room.e_to
+    elif move == 'w' and player.current_room.w_to is not None:
+        player.current_room = player.current_room.w_to
+    else:
+        #    elif player.current_room.n_to is None or player.current_room.s_to is None or player.current_room.e_to is None or player.current_room.w_to is None:
+        print("\nYou crazy? You can't do that!\n")
