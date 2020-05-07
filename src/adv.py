@@ -1,6 +1,7 @@
 ''' adventure game '''
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -35,6 +36,23 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# create some items
+item = {
+    'gun': Item("gun", "for the uncivilized"),
+    'knife': Item("knife", "for cutting steaks"),
+    'plate': Item("plate", "for holding steak"),
+    'fork': Item("fork", "for spearking steaks"),
+    'couch': Item("couch", "latest sectional from Ikea"),
+    'steak': Item("steak", "covered in ketchup"),
+}
+
+# and put items in rooms
+room['outside'].items = [item['couch']]
+room['foyer'].items = [item['gun'], item['steak']]
+room['overlook'].items = [item['knife']]
+room['narrow'].items = [item['plate']]
+room['treasure'].items = [item['fork']]
+
 #
 # Main
 #
@@ -60,20 +78,29 @@ move = None
 while move != 'q':
     #    print(f"\n{player.who} is in the {player.where_am_i()}\n")
     print(f"\nYou are in the {player.where_am_i()}\n")
-    move = input(f"\nWhere do you want to go, {player.who_am_i()}? ").lower()
-    if move == 'q':
-        print("Bye you quitter!")
-        exit()
-    elif move not in choices:
-        print(f'\nValid options are q, n, s, w, e')
-    elif move == 'n' and player.current_room.n_to is not None:
-        player.current_room = player.current_room.n_to
-    elif move == 's' and player.current_room.s_to is not None:
-        player.current_room = player.current_room.s_to
-    elif move == 'e' and player.current_room.e_to is not None:
-        player.current_room = player.current_room.e_to
-    elif move == 'w' and player.current_room.w_to is not None:
-        player.current_room = player.current_room.w_to
+    move = input(
+        f"\nWhere do you want to go, {player.who_am_i()}? ").lower().split()
+    if len(move) == 2:
+        print("read in 2 words")
+        if move[0] == 'get' or move[0] == 'take':
+            pass
+    print("move is ", move)
+    if len(move) == 1:
+        move = move[0]
+        print("move is ", move)
+        if move == 'q':
+            print("You'll never get anywhere in life being a quitter!")
+            exit()
+        elif move not in choices:
+            print(f'\nValid options are q, n, s, w, e')
+        elif move == 'n' and player.current_room.n_to is not None:
+            player.current_room = player.current_room.n_to
+        elif move == 's' and player.current_room.s_to is not None:
+            player.current_room = player.current_room.s_to
+        elif move == 'e' and player.current_room.e_to is not None:
+            player.current_room = player.current_room.e_to
+        elif move == 'w' and player.current_room.w_to is not None:
+            player.current_room = player.current_room.w_to
     else:
         #    elif player.current_room.n_to is None or player.current_room.s_to is None or player.current_room.e_to is None or player.current_room.w_to is None:
         print("\nYou crazy? You can't do that!\n")
