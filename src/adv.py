@@ -58,9 +58,9 @@ room['treasure'].items = [item['fork']]
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player("zaphod", room["outside"])
-#user_name = input("What's your name? ")
-##player = Player(user_name, room["outside"])
+#player = Player("zaphod", room["outside"])
+user_name = input("What's your name? ")
+player = Player(user_name, room["outside"])
 
 # Write a loop that:
 #
@@ -72,7 +72,7 @@ player = Player("zaphod", room["outside"])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-choices = ['q', 'n', 's', 'w', 'e']
+choices = ['q', 'n', 's', 'w', 'e', 'i', 'inventory']
 
 move = None
 while move != 'q':
@@ -81,13 +81,23 @@ while move != 'q':
     move = input(
         f"\nWhere do you want to go, {player.who_am_i()}? ").lower().split()
     if len(move) == 2:
-        print("read in 2 words")
+        #        print("read in 2 words")
         if move[0] == 'get' or move[0] == 'take':
-            pass
-    print("move is ", move)
-    if len(move) == 1:
+            if move[1] in [item.name for item in player.current_room.items]:
+                player.get(item[move[1]])
+                item[move[1]].on_take()
+            else:
+                print(f"I don't see any {move[1]} here!")
+        elif move[0] == 'drop':
+            if move[1] in [item.name for item in player.items]:
+                player.drop(item[move[1]])
+                item[move[1]].on_drop()
+            else:
+                print(f"You don't have a {move[1]}!")
+        else:
+            print("Valid choices are get [item], take [item] or drop [item]")
+    elif len(move) == 1:
         move = move[0]
-        print("move is ", move)
         if move == 'q':
             print("You'll never get anywhere in life being a quitter!")
             exit()
@@ -101,6 +111,10 @@ while move != 'q':
             player.current_room = player.current_room.e_to
         elif move == 'w' and player.current_room.w_to is not None:
             player.current_room = player.current_room.w_to
+        elif move == 'i' or move == 'inventory':
+            print(player)
+        else:
+            print("\nYou crazy? You can't do that!\n")
     else:
-        #    elif player.current_room.n_to is None or player.current_room.s_to is None or player.current_room.e_to is None or player.current_room.w_to is None:
-        print("\nYou crazy? You can't do that!\n")
+        print(f'''Valid choices are get [item], take [item] or drop [item]
+or q, n, s, w, e, i and inventory''')

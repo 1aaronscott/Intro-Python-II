@@ -18,14 +18,6 @@ class Room():
         self.w_to = w_to
         self.items = items
 
-    # def what_location(self):
-    #     '''returns current location of player'''
-    #     return self.loc
-
-    # def describe(self):
-    #     '''returns description of player's current location'''
-    #     return self.description
-
     def __str__(self):
         #         return f'''Current room: {self.loc}
         # Room description: {self.description}'''

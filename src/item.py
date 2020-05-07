@@ -9,3 +9,11 @@ class Item():
     def __init__(self, name, description):
         self.name = name
         self.description = description
+
+    def on_take(self):
+        ''' Status message from taking an item '''
+        print(f'{self.name} taken!')
+
+    def on_drop(self):
+        ''' Status message for dropping an item '''
+        print(f'{self.name} dropped!')

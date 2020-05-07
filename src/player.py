@@ -21,3 +21,27 @@ class Player():
     def where_am_i(self):
         ''' returns the location of player '''
         return self.current_room
+
+    def get(self, thing):
+        ''' method for picking up an item
+        added to player
+        removed from current room '''
+        self.items.append(thing)
+        self.current_room.items.remove(thing)
+
+    def drop(self, thing):
+        ''' method for dropping an item 
+        removed from player
+        added to current room '''
+        self.items.remove(thing)
+        self.current_room.items.append(thing)
+
+    def __str__(self):
+        ''' Print the stuff user is holding '''
+
+        my_junk = "You've got:\n"
+
+        for thing in self.items:
+            my_junk += f'''\t{thing.name} - {thing.description}\n'''
+
+        return my_junk
